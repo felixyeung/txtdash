@@ -81,14 +81,14 @@ class Layout(object):
         for i in range(0, n):
             size_adjustment = origin_adjustment = 0
             # Distribute remainder with to the to boxes
-            if i <= remainder:
+            if i < remainder:
                size_adjustment = 1
             if last_adjusted:
                origin_adjustment = 1
             bl[i].set_dim(self.inner_height, box_width + size_adjustment)
-            bl[i].set_origin(self.padding, self.padding + (box_width * i) + origin_adjustment)
+            bl[i].set_origin(self.padding, self.padding + (box_width + 1) * i + origin_adjustment)
             bl[i].border(Border.DEFAULT)
-            last_adjusted = i <= remainder
+            last_adjusted = i < remainder
     
     def draw(self):
         self.root.draw()
