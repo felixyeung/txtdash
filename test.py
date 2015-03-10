@@ -1,18 +1,23 @@
+import logging
 import time
 import curses as cs
 from curses import panel
 from time import sleep
 from functools import partial
 
+logging.basicConfig(filename='mylog', level=logging.DEBUG)
+
 class Box(object):
     def __init__(self, window=None):
        if window is not None:
            self.window = window
        else:
-           self.wndow = cs.newwin(1, 1)
+           self.window = cs.newwin(1, 1)
        self.panel = panel.new_panel(self.window)
 
     def set_origin(self, top, left):
+        logging.debug(self.window)
+        logging.debug('move to {0}, {1}'.format(top, left))
         self.window.mvwin(top, left)
 
     def set_dim(self, height, width):
@@ -41,6 +46,7 @@ class Layout(object):
 
     def __init__(self, root_box):
         self.root = root_box
+        self.root.border(Border.THIN)
         self.height, self.width = self._measure()
         self.inner_height = self.height - 2
         self.inner_width = self.width - 2
@@ -63,14 +69,17 @@ class Layout(object):
         # Horizontal arragement for now.
         n = len(self.boxes)
         box_width = self.inner_width / n
-        bl = list(boxes)
+        bl = list(self.boxes)
         for i in range(0, n):
+            logging.debug(i)
             bl[i].set_dim(self.inner_height, box_width)
-            bl[i].set_origin(0, box_width * n + 1)
+            bl[i].set_origin(1, box_width * i + i)
             bl[i].border(Border.THICK)
 
     def draw(self):
-        foreach 
+        self.root.draw()
+        for box in list(self.boxes):
+            box.draw()
 
 def foo(screen):
     cs.start_color()
@@ -78,8 +87,12 @@ def foo(screen):
 
     myscreen = Box(screen)
     mylayout = Layout(myscreen)
-    
-
+    box_a = Box()
+    box_b = Box()
+    box_c = Box()
+    mylayout.add_boxes(box_a, box_b, box_c)
+    mylayout.arrange()
+    mylayout.draw()
 
     myscreen.border(Border.THIN)
 
