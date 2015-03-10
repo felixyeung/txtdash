@@ -48,12 +48,13 @@ class Layout(object):
     ARRANGE_VERT = 1
     ARRANGE_HORIZ = 2
 
-    def __init__(self, root_box):
+    def __init__(self, root_box, padding=1):
         self.root = root_box
         self.root.border(Border.DEFAULT)
+        self.padding = padding
         self.height, self.width = self._measure()
-        self.inner_height = inner(self.height)
-        self.inner_width = inner(self.width)
+        self.inner_height = inner(self.height, self.padding)
+        self.inner_width = inner(self.width, self.padding)
         self.boxes = set()
 
     def set_arrangement(self, arrangement):
@@ -72,18 +73,23 @@ class Layout(object):
     def arrange(self):
         # Horizontal arragement for now.
         n = len(self.boxes)
-        box_width = self.inner_width / n
-        remainder =  self.inner_width % n
+        gaps = n - 1
+        box_width = (self.inner_width - gaps) / n
+        remainder =  (self.inner_width - gaps) % n
         bl = list(self.boxes)
+        last_adjusted = False
         for i in range(0, n):
-            adjustment = 0
+            size_adjustment = origin_adjustment = 0
             # Distribute remainder with to the to boxes
             if i <= remainder:
-               adjustment = 1
-            bl[i].set_dim(self.inner_height, box_width + adjustment)
-            bl[i].set_origin(1, box_width * i + 1)
+               size_adjustment = 1
+            if last_adjusted:
+               origin_adjustment = 1
+            bl[i].set_dim(self.inner_height, box_width + size_adjustment)
+            bl[i].set_origin(self.padding, self.padding + (box_width * i) + origin_adjustment)
             bl[i].border(Border.DEFAULT)
-
+            last_adjusted = i <= remainder
+    
     def draw(self):
         self.root.draw()
         for box in list(self.boxes):
@@ -95,10 +101,12 @@ def foo(screen):
 
     myscreen = Box(screen)
     mylayout = Layout(myscreen)
-    box_a = Box()
-    box_b = Box()
-    box_c = Box()
-    mylayout.add_boxes(box_a, box_b, box_c)
+    
+    myboxes = []
+    for each in range(6):
+        myboxes.append(Box())
+
+    mylayout.add_boxes(*myboxes)
     mylayout.arrange()
     mylayout.draw()
 
