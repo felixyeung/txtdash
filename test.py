@@ -85,8 +85,8 @@ class Layout(object):
                size_adjustment = 1
             if last_adjusted:
                origin_adjustment = 1
-            bl[i].set_dim(self.inner_height, box_width + size_adjustment)
-            bl[i].set_origin(self.padding, self.padding + (box_width + 1) * i + origin_adjustment)
+            bl[i].set_dim(self.inner_height, box_width) # + size_adjustment)
+            bl[i].set_origin(self.padding, self.padding + (box_width * i)) # + origin_adjustment)
             bl[i].border(Border.DEFAULT)
             last_adjusted = i < remainder
     
