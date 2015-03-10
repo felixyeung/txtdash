@@ -73,20 +73,21 @@ class Layout(object):
     def arrange(self):
         # Horizontal arragement for now.
         n = len(self.boxes)
-        gaps = n - 1
-        box_width = (self.inner_width - gaps) / n
-        remainder =  (self.inner_width - gaps) % n
+        box_width = (self.inner_width) / n
+        remainder =  (self.inner_width) % n
         bl = list(self.boxes)
         last_adjusted = False
+        origin_adjustment = 0
         for i in range(0, n):
-            size_adjustment = origin_adjustment = 0
+            size_adjustment = 0
             # Distribute remainder with to the to boxes
             if i < remainder:
                size_adjustment = 1
             if last_adjusted:
-               origin_adjustment = 1
-            bl[i].set_dim(self.inner_height, box_width) # + size_adjustment)
-            bl[i].set_origin(self.padding, self.padding + (box_width * i)) # + origin_adjustment)
+               # BE CAREFUL! adjustment to origin is cumulative!
+               origin_adjustment += 1
+            bl[i].set_dim(self.inner_height, box_width + size_adjustment)
+            bl[i].set_origin(self.padding, self.padding + (box_width * i) + origin_adjustment)
             bl[i].border(Border.DEFAULT)
             last_adjusted = i < remainder
     
@@ -103,7 +104,7 @@ def foo(screen):
     mylayout = Layout(myscreen)
     
     myboxes = []
-    for each in range(6):
+    for each in range(7):
         myboxes.append(Box())
 
     mylayout.add_boxes(*myboxes)
