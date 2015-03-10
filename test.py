@@ -37,8 +37,12 @@ class Box(object):
 
 
 class Border(object):
+    DEFAULT = []
     THICK = ['@', '@', '@', '@', '@', '@', '@', '@']
     THIN = ['+', '+', '+', '+', '+', '+', '+', '+']
+
+def inner(val, padding=1):
+    return val - (padding * 2)
 
 class Layout(object):
     ARRANGE_VERT = 1
@@ -46,10 +50,10 @@ class Layout(object):
 
     def __init__(self, root_box):
         self.root = root_box
-        self.root.border(Border.THIN)
+        self.root.border(Border.DEFAULT)
         self.height, self.width = self._measure()
-        self.inner_height = self.height - 2
-        self.inner_width = self.width - 2
+        self.inner_height = inner(self.height)
+        self.inner_width = inner(self.width)
         self.boxes = set()
 
     def set_arrangement(self, arrangement):
@@ -69,12 +73,16 @@ class Layout(object):
         # Horizontal arragement for now.
         n = len(self.boxes)
         box_width = self.inner_width / n
+        remainder =  self.inner_width % n
         bl = list(self.boxes)
         for i in range(0, n):
-            logging.debug(i)
-            bl[i].set_dim(self.inner_height, box_width)
-            bl[i].set_origin(1, box_width * i + i)
-            bl[i].border(Border.THICK)
+            adjustment = 0
+            # Distribute remainder with to the to boxes
+            if i <= remainder:
+               adjustment = 1
+            bl[i].set_dim(self.inner_height, box_width + adjustment)
+            bl[i].set_origin(1, box_width * i + 1)
+            bl[i].border(Border.DEFAULT)
 
     def draw(self):
         self.root.draw()
@@ -94,10 +102,10 @@ def foo(screen):
     mylayout.arrange()
     mylayout.draw()
 
-    myscreen.border(Border.THIN)
+    myscreen.border(Border.DEFAULT)
 
     mybox = Box(cs.newwin(10, 20, 20, 20))
-    mybox.border(Border.THICK)
+    mybox.border(Border.DEFAULT)
 
     c1 = cs.init_pair(1, cs.COLOR_RED, cs.COLOR_WHITE)
     c1 = cs.init_pair(2, cs.COLOR_YELLOW, cs.COLOR_BLUE)
