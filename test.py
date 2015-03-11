@@ -45,8 +45,8 @@ def inner(val, padding=1):
     return val - (padding * 2)
 
 class Arrangement(object):
-    HORIZONTAL = 1
-    VERTICAL = 2
+    HORIZONTAL = 'horizontial'
+    VERTICAL = 'vertical'
 
 class Layout(object):
     def __init__(self, root_box, padding=1, arrangement=Arrangement.HORIZONTAL):
@@ -73,10 +73,8 @@ class Layout(object):
 
     def arrange(self):
         n = len(self.boxes)
-        if self.arrangement == Arrangement.HORIZONTAL:
-           self._arrange_horizontial(n)
-        else:
-           self._arrange_vertical(n)
+        method_name = '_arrange_{0}'.format(self.arrangement)    
+        getattr(self, method_name)(n)
 
     def _arrange_horizontial(self, n):
         box_width = (self.inner_width) / n
