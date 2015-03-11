@@ -80,7 +80,7 @@ class Layout(object):
         box_width = (self.inner_width) / n
         remainder =  (self.inner_width) % n
         bl = list(self.boxes)
-        adjusted = False
+
         origin_adjustment = 0
         for i in range(0, n):
             size_adjustment = 0
