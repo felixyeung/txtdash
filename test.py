@@ -59,6 +59,7 @@ class Layout(object):
         self.top, self.left = self.root.get_origin()
         self.inner_height = inner(self.height, self.padding)
         self.inner_width = inner(self.width, self.padding)
+        # TODO: Use an OrderedSet
         self.boxes = set()
 
     def set_arrangement(self, arrangement):
