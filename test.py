@@ -96,14 +96,21 @@ class Layout(object):
             if last_adjusted:
                # BE CAREFUL! adjustment to origin is cumulative!
                origin_adjustment += 1
-            bl[i].set_dim(self.inner_height, box_width + size_adjustment)
-            bl[i].set_origin(self.padding + self.top, self.padding + self.left + (box_width * i) + origin_adjustment)
+            self._arrange_box(bl[i],
+                              0,
+                              (box_width * i) + origin_adjustment,
+                              self.inner_height,
+                              box_width + size_adjustment)
             bl[i].border(Border.DEFAULT)
             last_adjusted = i < remainder
 
     def _arrange_vertical(self):
         pass
- 
+
+    def _arrange_box(self, box, top, left, height, width):
+        box.set_dim(height, width)
+        box.set_origin(self.padding + self.top + top, self.padding + self.left + left)
+
     def draw(self):
         self.root.draw()
         for box in list(self.boxes):
