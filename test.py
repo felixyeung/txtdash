@@ -44,14 +44,17 @@ class Border(object):
 def inner(val, padding=1):
     return val - (padding * 2)
 
-class Layout(object):
-    ARRANGE_VERT = 1
-    ARRANGE_HORIZ = 2
+class Arrangement(object):
+    HORIZONTAL = 1
+    VERTICAL = 2
 
-    def __init__(self, root_box, padding=1):
+class Layout(object):
+    def __init__(self, root_box, padding=1, arrangement=Arrangement.HORIZONTAL):
         self.root = root_box
         self.root.border(Border.DEFAULT)
         self.padding = padding
+        self.set_arrangement(arrangement)
+
         self.height, self.width = self._measure()
         self.top, self.left = self.root.get_origin()
         self.inner_height = inner(self.height, self.padding)
@@ -72,8 +75,13 @@ class Layout(object):
         return self.root.get_dim()
 
     def arrange(self):
-        # Horizontal arragement for now.
-        n = len(self.boxes)
+        if self.arrangement == Arrangement.HORIZONTAL:
+           self._arrange_horizontial()
+        else:
+           self._arrange_vertical()
+
+    def _arrange_horizontial(self):
+	n = len(self.boxes)
         box_width = (self.inner_width) / n
         remainder =  (self.inner_width) % n
         bl = list(self.boxes)
@@ -91,7 +99,10 @@ class Layout(object):
             bl[i].set_origin(self.padding + self.top, self.padding + self.left + (box_width * i) + origin_adjustment)
             bl[i].border(Border.DEFAULT)
             last_adjusted = i < remainder
-    
+
+    def _arrange_vertical(self):
+        pass
+ 
     def draw(self):
         self.root.draw()
         for box in list(self.boxes):
