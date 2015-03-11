@@ -116,6 +116,11 @@ class Layout(object):
         for box in list(self.boxes):
             box.draw()
 
+
+def make_boxes(n):
+    return [Box() for each in range(n)]
+
+
 def foo(screen):
     cs.start_color()
     cs.curs_set(0)
@@ -123,17 +128,13 @@ def foo(screen):
     myscreen = Box(screen)
     mylayout = Layout(myscreen)
     
-    myboxes = []
-    for each in range(5):
-        myboxes.append(Box())
+    myboxes = make_boxes(5)
 
     mylayout.add_boxes(*myboxes)
     mylayout.arrange()
     mylayout.draw()
 
-    mynestedboxes = []
-    for each in range(3):
-        mynestedboxes.append(Box())
+    mynestedboxes = make_boxes(3)
     
     mysecondlayout = Layout(myboxes[1])
     mysecondlayout.add_boxes(*mynestedboxes)
