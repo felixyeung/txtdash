@@ -72,13 +72,13 @@ class Layout(object):
         self.addBoxes(box)
 
     def arrange(self):
+        n = len(self.boxes)
         if self.arrangement == Arrangement.HORIZONTAL:
-           self._arrange_horizontial()
+           self._arrange_horizontial(n)
         else:
-           self._arrange_vertical()
+           self._arrange_vertical(n)
 
-    def _arrange_horizontial(self):
-	n = len(self.boxes)
+    def _arrange_horizontial(self, n):
         box_width = (self.inner_width) / n
         remainder =  (self.inner_width) % n
         bl = list(self.boxes)
@@ -86,8 +86,9 @@ class Layout(object):
         origin_adjustment = 0
         for i in range(0, n):
             size_adjustment = 0
-            # Distribute remainder with to the to boxes
             has_remainder = i < remainder
+            # Previous item be a box index, and its box must have received an adjustment
+            adjusted =  0 <= i - 1 < remainder
             if has_remainder:
                size_adjustment = 1
             if adjusted:
@@ -99,9 +100,8 @@ class Layout(object):
                               self.inner_height,
                               box_width + size_adjustment)
             bl[i].border(Border.DEFAULT)
-            adjusted = has_remainder
 
-    def _arrange_vertical(self):
+    def _arrange_vertical(self, n):
         pass
 
     def _arrange_box(self, box, top, left, height, width):
