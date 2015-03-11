@@ -53,6 +53,7 @@ class Layout(object):
         self.root.border(Border.DEFAULT)
         self.padding = padding
         self.height, self.width = self._measure()
+        self.top, self.left = self.root.get_origin()
         self.inner_height = inner(self.height, self.padding)
         self.inner_width = inner(self.width, self.padding)
         self.boxes = set()
@@ -87,7 +88,7 @@ class Layout(object):
                # BE CAREFUL! adjustment to origin is cumulative!
                origin_adjustment += 1
             bl[i].set_dim(self.inner_height, box_width + size_adjustment)
-            bl[i].set_origin(self.padding, self.padding + (box_width * i) + origin_adjustment)
+            bl[i].set_origin(self.padding + self.top, self.padding + self.left + (box_width * i) + origin_adjustment)
             bl[i].border(Border.DEFAULT)
             last_adjusted = i < remainder
     
@@ -104,12 +105,21 @@ def foo(screen):
     mylayout = Layout(myscreen)
     
     myboxes = []
-    for each in range(7):
+    for each in range(5):
         myboxes.append(Box())
 
     mylayout.add_boxes(*myboxes)
     mylayout.arrange()
     mylayout.draw()
+
+    mynestedboxes = []
+    for each in range(3):
+        mynestedboxes.append(Box())
+    
+    mysecondlayout = Layout(myboxes[1])
+    mysecondlayout.add_boxes(*mynestedboxes)
+    mysecondlayout.arrange()
+    mysecondlayout.draw()
 
     myscreen.border(Border.DEFAULT)
 
