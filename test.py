@@ -150,13 +150,16 @@ def foo(screen):
     mylayout.draw()
 
     mynestedboxes = make_boxes(3)
-    
-    mysecondlayout = Layout(myboxes[1])
+    mysecondlayout = Layout(myboxes[1], arrangement=Arrangement.VERTICAL)
     mysecondlayout.add_boxes(*mynestedboxes)
     mysecondlayout.arrange()
     mysecondlayout.draw()
 
-    myscreen.border(Border.DEFAULT)
+    mynestedboxes2 = make_boxes(7)
+    mysecondlayout = Layout(myboxes[3], arrangement=Arrangement.VERTICAL)
+    mysecondlayout.add_boxes(*mynestedboxes2)
+    mysecondlayout.arrange()
+    mysecondlayout.draw()
 
     mybox = Box(cs.newwin(10, 20, 20, 20))
     mybox.border(Border.DEFAULT)
