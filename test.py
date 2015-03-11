@@ -19,9 +19,11 @@ class Box(object):
         logging.debug(self.window)
         logging.debug('move to {0}, {1}'.format(top, left))
         self.window.mvwin(top, left)
+        return self
 
     def set_dim(self, height, width):
         self.window.resize(height, width)
+        return self
 
     def get_origin(self):
         return self.window.getbegyx()
@@ -38,6 +40,7 @@ class Box(object):
 
 class Border(object):
     DEFAULT = []
+    NONE = ['.', '.', '.', '.', '.', '.', '.', '.']
     THICK = ['@', '@', '@', '@', '@', '@', '@', '@']
     THIN = ['+', '+', '+', '+', '+', '+', '+', '+']
 
@@ -53,16 +56,30 @@ class Layout(object):
         self.root = root_box
         self.root.border(Border.DEFAULT)
         self.padding = padding
-        self.set_arrangement(arrangement)
         self.height, self.width = self.root.get_dim()
         self.top, self.left = self.root.get_origin()
-        self.inner_height = inner(self.height, self.padding)
-        self.inner_width = inner(self.width, self.padding)
+        self.set_collapsed(False)
+        self.set_arrangement(arrangement)
         # TODO: Use an OrderedSet
         self.boxes = set()
 
+    def set_collapsed(self, collapsed=True):
+        self.collapsed = collapsed
+
+        if self.collapsed:
+            self.root.border(Border.NONE)
+            self.padding = 0
+        else:
+            self.root.border(Border.DEFAULT)
+            self.padding = 1
+
+        self.inner_height = inner(self.height, self.padding)
+        self.inner_width = inner(self.width, self.padding)
+        return self
+
     def set_arrangement(self, arrangement):
         self.arrangement = arrangement
+        return self
 
     def add_boxes(self, *boxes):
         for box in boxes:
@@ -150,7 +167,7 @@ def foo(screen):
     mylayout.draw()
 
     mynestedboxes = make_boxes(3)
-    mysecondlayout = Layout(myboxes[1], arrangement=Arrangement.VERTICAL)
+    mysecondlayout = Layout(myboxes[1], arrangement=Arrangement.VERTICAL).set_collapsed()
     mysecondlayout.add_boxes(*mynestedboxes)
     mysecondlayout.arrange()
     mysecondlayout.draw()
