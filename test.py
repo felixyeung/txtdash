@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+import locale
 import logging
 import time
 import curses as cs
@@ -5,6 +8,7 @@ from curses import panel
 from time import sleep
 from functools import partial
 
+locale.setlocale(locale.LC_ALL, '')
 logging.basicConfig(filename='mylog', level=logging.DEBUG)
 
 class Box(object):
@@ -37,6 +41,12 @@ class Box(object):
     def border(self, type):
         self.window.border(*type)
 
+    def _real_border(self):
+        y, x = self.get_origin()
+        try:
+            self.window.addstr(0, 0, '╔')
+        except:
+            pass
 
 class Border(object):
     DEFAULT = []
@@ -144,8 +154,10 @@ class Layout(object):
         box.border(Border.DEFAULT)
 
     def draw(self):
+        self.root._real_border()
         self.root.draw()
         for box in list(self.boxes):
+            box._real_border()
             box.draw()
 
 
@@ -180,16 +192,11 @@ def foo(screen):
 
     mybox = Box(cs.newwin(10, 20, 20, 20))
     mybox.border(Border.DEFAULT)
-
     c1 = cs.init_pair(1, cs.COLOR_RED, cs.COLOR_WHITE)
     c1 = cs.init_pair(2, cs.COLOR_YELLOW, cs.COLOR_BLUE)
     c1 = cs.init_pair(3, cs.COLOR_BLACK, cs.COLOR_GREEN)
-
-    #myscreen.window.addstr(1, 1, 'what!', cs.color_pair(1))
     mybox.window.addstr(1, 1, 'hi world!', cs.color_pair(2))
     mybox.window.addstr(3, 1, 'bye world!', cs.color_pair(3))    
-    
-    #myscreen.draw()
     mybox.draw()
 
     while True:
