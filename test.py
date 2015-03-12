@@ -2,22 +2,21 @@
 
 import locale
 import logging
-import time
 import curses as cs
 from curses import panel
 from time import sleep
-from functools import partial
 
 locale.setlocale(locale.LC_ALL, '')
 logging.basicConfig(filename='mylog', level=logging.DEBUG)
 
+
 class Box(object):
     def __init__(self, window=None):
-       if window is not None:
-           self.window = window
-       else:
-           self.window = cs.newwin(1, 1)
-       self.panel = panel.new_panel(self.window)
+        if window is not None:
+            self.window = window
+        else:
+            self.window = cs.newwin(1, 1)
+        self.panel = panel.new_panel(self.window)
 
     def set_origin(self, top, left):
         logging.debug(self.window)
@@ -48,18 +47,25 @@ class Box(object):
         except:
             pass
 
+
 class Border(object):
     DEFAULT = []
     NONE = ['.', '.', '.', '.', '.', '.', '.', '.']
     THICK = ['@', '@', '@', '@', '@', '@', '@', '@']
     THIN = ['+', '+', '+', '+', '+', '+', '+', '+']
 
+    def is_ascii(cls):
+        return all(ord(c) < 128 for c in s)
+
+
 def inner(val, padding=1):
     return val - (padding * 2)
+
 
 class Arrangement(object):
     HORIZONTAL = 'horizontial'
     VERTICAL = 'vertical'
+
 
 class Layout(object):
     def __init__(self, root_box, padding=1, arrangement=Arrangement.HORIZONTAL):
@@ -93,19 +99,19 @@ class Layout(object):
 
     def add_boxes(self, *boxes):
         for box in boxes:
-           self.boxes.add(box)
+            self.boxes.add(box)
 
     def add_box(self, box):
         self.addBoxes(box)
 
     def arrange(self):
         n = len(self.boxes)
-        method_name = '_arrange_{0}'.format(self.arrangement)    
+        method_name = '_arrange_{0}'.format(self.arrangement)
         getattr(self, method_name)(n)
 
     def _arrange_horizontial(self, n):
         box_width = (self.inner_width) / n
-        remainder =  (self.inner_width) % n
+        remainder = (self.inner_width) % n
         bl = list(self.boxes)
 
         origin_adjustment = 0
@@ -113,12 +119,12 @@ class Layout(object):
             size_adjustment = 0
             has_remainder = i < remainder
             # Previous item be a box index, and its box must have received an adjustment
-            adjusted =  0 <= i - 1 < remainder
+            adjusted = 0 <= i - 1 < remainder
             if has_remainder:
-               size_adjustment = 1
+                size_adjustment = 1
             if adjusted:
-               # BE CAREFUL! adjustment to origin is cumulative!
-               origin_adjustment += 1
+                # BE CAREFUL! adjustment to origin is cumulative!
+                origin_adjustment += 1
             self._arrange_box(bl[i],
                               0,
                               (box_width * i) + origin_adjustment,
@@ -128,7 +134,7 @@ class Layout(object):
     def _arrange_vertical(self, n):
         # TODO Refactor with horizontal!
         box_height = (self.inner_height) / n
-        remainder =  (self.inner_height) % n
+        remainder = (self.inner_height) % n
         bl = list(self.boxes)
 
         origin_adjustment = 0
@@ -136,12 +142,12 @@ class Layout(object):
             size_adjustment = 0
             has_remainder = i < remainder
             # Previous item be a box index, and its box must have received an adjustment
-            adjusted =  0 <= i - 1 < remainder
+            adjusted = 0 <= i - 1 < remainder
             if has_remainder:
-               size_adjustment = 1
+                size_adjustment = 1
             if adjusted:
-               # BE CAREFUL! adjustment to origin is cumulative!
-               origin_adjustment += 1
+                # BE CAREFUL! adjustment to origin is cumulative!
+                origin_adjustment += 1
             self._arrange_box(bl[i],
                               (box_height * i) + origin_adjustment,
                               0,
@@ -171,7 +177,7 @@ def foo(screen):
 
     myscreen = Box(screen)
     mylayout = Layout(myscreen)
-    
+
     myboxes = make_boxes(5)
 
     mylayout.add_boxes(*myboxes)
@@ -196,10 +202,11 @@ def foo(screen):
     c1 = cs.init_pair(2, cs.COLOR_YELLOW, cs.COLOR_BLUE)
     c1 = cs.init_pair(3, cs.COLOR_BLACK, cs.COLOR_GREEN)
     mybox.window.addstr(1, 1, 'hi world!', cs.color_pair(2))
-    mybox.window.addstr(3, 1, 'bye world!', cs.color_pair(3))    
+    mybox.window.addstr(3, 1, 'bye world!', cs.color_pair(3))
     mybox.draw()
 
     while True:
         sleep(0.1)
+
 
 cs.wrapper(foo)
