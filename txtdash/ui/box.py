@@ -41,7 +41,17 @@ class Box(object):
 
     def _extended_border(self, type):
         y, x = self.get_origin()
+        h, w = self.get_dim()
         try:
-            self.window.addstr(0, 0, type[0])
+            for i in range(1, h - 1):
+                self.window.addstr(i, 0, type[0])
+                self.window.addstr(i, w - 1, type[1])
+            for i in range(1, w - 1):
+                self.window.addstr(0, i, type[2])
+                self.window.addstr(h - 1, i, type[3])
+            self.window.addstr(0, 0, type[4])
+            self.window.addstr(0, w - 1, type[5])
+            self.window.addstr(h - 1, 0, type[6])
+            self.window.addstr(h - 1, w - 1, type[7])
         except:
             pass
