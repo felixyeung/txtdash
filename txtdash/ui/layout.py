@@ -6,7 +6,6 @@ from txtdash.ui.utils import inner
 class Layout(object):
     def __init__(self, root_box, padding=1, arrangement=Arrangement.HORIZONTAL):
         self.root = root_box
-        self.root.border(Border.DEFAULT)
         self.padding = padding
         self.height, self.width = self.root.get_dim()
         self.top, self.left = self.root.get_origin()
@@ -19,10 +18,8 @@ class Layout(object):
         self.collapsed = collapsed
 
         if self.collapsed:
-            self.root.border(Border.NONE)
             self.padding = 0
         else:
-            self.root.border(Border.DEFAULT)
             self.padding = 1
 
         self.inner_height = inner(self.height, self.padding)
@@ -93,9 +90,10 @@ class Layout(object):
     def _arrange_box(self, box, top, left, height, width):
         box.set_dim(height, width)
         box.set_origin(self.padding + self.top + top, self.padding + self.left + left)
-        box.border(Border.DEFAULT)
 
     def draw(self):
+        self.root.border(Border.DOUBLE)
         self.root.draw()
         for box in list(self.boxes):
+            box.border(Border.DEFAULT)
             box.draw()
