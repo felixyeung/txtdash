@@ -3,6 +3,7 @@
 import locale
 from curses import panel
 import curses
+from txtdash.ui.utils import is_ascii
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -33,11 +34,14 @@ class Box(object):
         self.window.refresh()
 
     def border(self, type):
-        self.window.border(*type)
+        if is_ascii(''.join(type)):
+            self.window.border(*type)
+        else:
+            self._extended_border(type)
 
-    def _real_border(self):
+    def _extended_border(self, type):
         y, x = self.get_origin()
         try:
-            self.window.addstr(0, 0, '╔')
+            self.window.addstr(0, 0, type[0])
         except:
             pass

@@ -96,8 +96,6 @@ class Layout(object):
         box.border(Border.DEFAULT)
 
     def draw(self):
-        self.root._real_border()
         self.root.draw()
         for box in list(self.boxes):
-            box._real_border()
             box.draw()

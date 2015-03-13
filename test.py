@@ -16,19 +16,19 @@ def foo(screen):
     my_screen = Box(screen)
     my_layout = Layout(my_screen)
 
-    my_boxes = make_boxes(5)
+    my_boxes = make_boxes(Box, 5)
 
     my_layout.add_boxes(*my_boxes)
     my_layout.arrange()
     my_layout.draw()
 
-    my_nested_boxes = make_boxes(3)
+    my_nested_boxes = make_boxes(Box, 3)
     my_second_layout = Layout(my_boxes[1], arrangement=Arrangement.VERTICAL).set_collapsed()
     my_second_layout.add_boxes(*my_nested_boxes)
     my_second_layout.arrange()
     my_second_layout.draw()
 
-    my_nested_boxes_2 = make_boxes(7)
+    my_nested_boxes_2 = make_boxes(Box, 7)
     my_second_layout = Layout(my_boxes[3], arrangement=Arrangement.VERTICAL)
     my_second_layout.add_boxes(*my_nested_boxes_2)
     my_second_layout.arrange()
