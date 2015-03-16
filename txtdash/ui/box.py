@@ -55,3 +55,6 @@ class Box(object):
             self.window.addstr(h - 1, w - 1, type[7])
         except:
             pass
+
+def make_boxes(n):
+    return [Box() for each in range(n)]
