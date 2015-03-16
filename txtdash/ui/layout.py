@@ -1,5 +1,4 @@
 from txtdash.ui.arrangement import Arrangement
-from txtdash.ui.border import Border
 from txtdash.ui.utils import inner
 
 
@@ -92,8 +91,6 @@ class Layout(object):
         box.set_origin(self.padding + self.top + top, self.padding + self.left + left)
 
     def draw(self):
-        self.root.border(Border.DOUBLE)
         self.root.draw()
         for box in list(self.boxes):
-            box.border(Border.DEFAULT)
             box.draw()
