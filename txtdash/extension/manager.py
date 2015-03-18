@@ -16,18 +16,21 @@ class Extension(object):
 class ExtensionRegistry(object):
     modules = {}
 
-    def get(cls, id):
+    @staticmethod
+    def get(id):
         return cls.modules[id]
 
-    def list(cls):
-        print cls.modules
+    @staticmethod
+    def list():
+        print ExtensionRegistry.modules
 
 
 class ExtensionLoader(object):
     """
     The extension loader should read from a path and load all modules in that path
     """
-    def load(cls, path):
+    @staticmethod
+    def load(path):
         # TODO
         pass
 

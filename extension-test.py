@@ -1,4 +1,4 @@
 from txtdash.extension.manager import ExtensionRegistry, ExtensionLoader
 
-ExtensionLoader.load()
+ExtensionLoader.load('extensions')
 ExtensionRegistry.list()
