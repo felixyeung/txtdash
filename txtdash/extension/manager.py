@@ -6,11 +6,11 @@ class Extension(object):
         if cls.__name__[0] == '_':
             raise InvalidFunctionName('Cannot init extension against a class starting with _')
         self._name = cls.__name__
-        self._func = cls
+        self._cls = cls
         self._id = get_uuid()
 
     def _register(self):
-        ExtensionRegistry[self._id] = self.cls
+        ExtensionRegistry[self._id] = self._cls
 
 
 class ExtensionRegistry(object):
@@ -19,12 +19,17 @@ class ExtensionRegistry(object):
     def get(cls, id):
         return cls.modules[id]
 
+    def list(cls):
+        print cls.modules
+
 
 class ExtensionLoader(object):
     """
     The extension loader should read from a path and load all modules in that path
     """
-    pass
+    def load(cls, path):
+        # TODO
+        pass
 
 
 class InvalidFunctionName(Exception):
