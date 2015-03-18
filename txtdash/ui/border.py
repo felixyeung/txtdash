@@ -7,7 +7,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 class Border(object):
     #TYPE = [ls, rs, ts, bs, tl, tr, bl, br]
-    DEFAULT = []
+    DEFAULT = ['║', '║', '═', '═', '╔', '╗', '╚', '╝']
     DOUBLE = ['║', '║', '═', '═', '╔', '╗', '╚', '╝']
     NONE = ['.', '.', '.', '.', '.', '.', '.', '.']
     THICK = ['@', '@', '@', '@', '@', '@', '@', '@']
