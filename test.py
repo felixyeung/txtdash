@@ -22,7 +22,7 @@ def foo(screen):
     my_layout.draw()
 
     my_nested_boxes = make_boxes(3)
-    apply_border(Border.DEFAULT, my_nested_boxes)
+    apply_border(Border.THICK, my_nested_boxes)
     my_second_layout = Layout(my_boxes[1], arrangement=Arrangement.VERTICAL).set_collapsed()
     my_second_layout.add_boxes(*my_nested_boxes)
     my_second_layout.arrange()
@@ -36,7 +36,7 @@ def foo(screen):
     my_second_layout.draw()
 
     my_box = Box(cs.newwin(10, 20, 20, 20))
-    my_box.set_border(Border.THICK)
+    my_box.set_border(Border.DOTTED)
     c1 = cs.init_pair(1, cs.COLOR_RED, cs.COLOR_WHITE)
     c1 = cs.init_pair(2, cs.COLOR_YELLOW, cs.COLOR_BLUE)
     c1 = cs.init_pair(3, cs.COLOR_BLACK, cs.COLOR_GREEN)
