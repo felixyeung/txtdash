@@ -2,7 +2,6 @@ import importlib
 import inspect
 import os
 from uuid import uuid4 as get_uuid
-import sys
 
 
 class Extension(object):
@@ -48,6 +47,7 @@ class ExtensionLoader(object):
                     print object._cls
                     print object._name
                     print '-' * 82
+
 
 class InvalidFunctionName(Exception):
     pass
