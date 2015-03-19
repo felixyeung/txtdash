@@ -12,9 +12,10 @@ class Extension(object):
         self._name = cls.__name__
         self._cls = cls
         self._id = get_uuid()
+        self._register()
 
     def _register(self):
-        ExtensionRegistry[self._id] = self._cls
+        ExtensionRegistry.modules[self._id] = self._cls
 
 
 class ExtensionRegistry(object):
@@ -38,17 +39,17 @@ class ExtensionLoader(object):
     def load(path):
         # TODO: make chdir a context manager.
         os.chdir(path)
-        print 'hi'
         # TODO: decide to read yaml or read dir structure?
-        for each in os.walk('.'):
-            print each
         for ext_dir in [item for item in os.listdir('.') if os.path.isdir(item)]:
-            ext_module = '{0}.{1}.main'.format(os.path.split(path)[-1], ext_dir)
-            print ext_module
-            my_mod = importlib.import_module(ext_module)
-            for each in inspect.getmembers(my_mod):
-                print each
-                print '-' * 80
+            module_name = '{0}.{1}.main'.format(os.path.split(path)[-1], ext_dir)
+            print module_name
+            loaded_module = importlib.import_module(module_name)
+            # Extract instance of Extension from module
+            for name, object in inspect.getmembers(loaded_module):
+                if isinstance(object, Extension):
+                    print object
+                    print object._cls
+
 
 class InvalidFunctionName(Exception):
     pass
