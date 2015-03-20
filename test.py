@@ -1,11 +1,13 @@
 import curses as cs
 from time import sleep
+from txtdash.content.provider import FunctionContentProvider
 
 from txtdash.ui.arrangement import Arrangement
 from txtdash.ui.border import Border
 from txtdash.ui.box import Box, make_boxes, apply_border
 from txtdash.ui.layout import Layout
 
+from txtdash.plugin import Loader, Registry
 
 def foo(screen):
     cs.start_color()
@@ -43,6 +45,17 @@ def foo(screen):
     my_box.window.addstr(1, 1, 'hi world!', cs.color_pair(2))
     my_box.window.addstr(3, 1, 'bye world!', cs.color_pair(3))
     my_box.draw()
+
+    Loader.load('plugins')
+    random_plugin = Registry.get('RandomPlugin')
+    rand_instance = random_plugin(Box, FunctionContentProvider, 1, 10000000)
+    assert isinstance(rand_instance.box, Box)
+    assert isinstance(rand_instance.content, FunctionContentProvider)
+    # TODO: fix bug where draw fails without calling set_border() first
+    rand_instance.box.set_dim(20, 20).set_origin(10, 50).set_border(Border.DOTTED)
+    # TODO: move type conversion into Provider?
+    rand_instance.box.window.addstr(1, 1, str(rand_instance.content.fetch()))
+    rand_instance.box.draw()
 
     while True:
         sleep(0.1)
