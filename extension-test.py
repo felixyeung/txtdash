@@ -1,8 +1,11 @@
-from txtdash.extension.manager import ExtensionRegistry, ExtensionLoader
+from txtdash.plugin.manager import PluginRegistry, PluginLoader
 
-ExtensionLoader.load('/Users/fyeung/Documents/curses/extensions')
+PluginLoader.load('/Users/fyeung/Documents/curses/plugins')
 
-for each in ExtensionRegistry.list():
-    a_class = ExtensionRegistry.get(each)
-    print a_class
-    a_class()
+print PluginRegistry.list()
+
+hello = PluginRegistry.get('HelloWorld')
+
+print hello
+
+my_hello = hello()

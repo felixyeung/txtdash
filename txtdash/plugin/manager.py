@@ -2,12 +2,13 @@ import importlib
 import inspect
 import os
 from uuid import uuid4 as get_uuid
+from txtdash.plugin.exception import InvalidPluginError
 
 
-class Extension(object):
+class Plugin(object):
     def __init__(self, cls):
         if cls.__name__[0] == '_':
-            raise InvalidFunctionName('Cannot init extension against a class starting with _')
+            raise InvalidPluginError('Cannot init plugin against a class starting with _')
         self._name = cls.__name__
         self._cls = cls
         # TODO: Determine if str or UUID object is preferable.
@@ -15,22 +16,22 @@ class Extension(object):
         self._register()
 
     def _register(self):
-        ExtensionRegistry.modules[self._id] = self._cls
+        PluginRegistry.modules[self._cls.__name__] = self._cls
 
 
-class ExtensionRegistry(object):
+class PluginRegistry(object):
     modules = {}
 
     @staticmethod
     def get(id):
-        return ExtensionRegistry.modules[id]
+        return PluginRegistry.modules[id]
 
     @staticmethod
     def list():
-        return ExtensionRegistry.modules
+        return PluginRegistry.modules
 
 
-class ExtensionLoader(object):
+class PluginLoader(object):
     @staticmethod
     def load(path):
         # TODO: make chdir a context manager.
@@ -42,12 +43,10 @@ class ExtensionLoader(object):
             loaded_module = importlib.import_module(module_name)
             # Extract instance of Extension from module
             for name, object in inspect.getmembers(loaded_module):
-                if isinstance(object, Extension):
+                if isinstance(object, Plugin):
                     print object
                     print object._cls
                     print object._name
                     print '-' * 82
 
 
-class InvalidFunctionName(Exception):
-    pass

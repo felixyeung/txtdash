@@ -1,0 +1,2 @@
+class TxtdashException(Exception):
+    pass

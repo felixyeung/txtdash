@@ -1,6 +1,6 @@
-from txtdash.extension.manager import Extension
+from txtdash.plugin.manager import Plugin
 
-@Extension
+@Plugin
 class HelloWorld(object):
     def __init__(self):
         print 'A new Hello has been constructed!'
