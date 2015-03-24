@@ -58,7 +58,10 @@ def foo(screen):
     rand_instance.box.draw()
 
     while True:
-        sleep(0.1)
+        # TODO: a more robust way to redraw.
+        rand_instance.box.window.addstr(1, 1, str(rand_instance.content.fetch()))
+        rand_instance.box.draw()
+        sleep(1)
 
 
 cs.wrapper(foo)

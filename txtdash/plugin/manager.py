@@ -2,7 +2,8 @@ import importlib
 import inspect
 import os
 from uuid import uuid4 as get_uuid
-from txtdash.plugin.exception import InvalidPluginError
+
+from txtdash.plugin.exception import InvalidPluginError, RedefinePluginError
 
 
 class Plugin(object):
@@ -16,7 +17,10 @@ class Plugin(object):
         self._register()
 
     def _register(self):
-        PluginRegistry.modules[self._cls.__name__] = self._cls
+        class_name = self._cls.__name__
+        if class_name in PluginRegistry.modules:
+            raise RedefinePluginError('Plugin {0} already defined'.format(class_name))
+        PluginRegistry.modules[class_name] = self._cls
 
 
 class PluginRegistry(object):
