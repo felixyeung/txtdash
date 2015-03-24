@@ -8,7 +8,7 @@ class Layout(object):
         self.padding = padding
         self.height, self.width = self.root.get_dim()
         self.top, self.left = self.root.get_origin()
-        self.set_collapsed(False)
+        self.set_collapsed()
         self.set_arrangement(arrangement)
         # TODO: Use an OrderedSet
         self.boxes = set()

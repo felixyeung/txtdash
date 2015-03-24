@@ -25,7 +25,7 @@ def foo(screen):
 
     my_nested_boxes = make_boxes(3)
     apply_border(Border.THICK, my_nested_boxes)
-    my_second_layout = Layout(my_boxes[1], arrangement=Arrangement.VERTICAL).set_collapsed()
+    my_second_layout = Layout(my_boxes[1], arrangement=Arrangement.VERTICAL).set_collapsed(False)
     my_second_layout.add_boxes(*my_nested_boxes)
     my_second_layout.arrange()
     my_second_layout.draw()
