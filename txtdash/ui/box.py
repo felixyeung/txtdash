@@ -35,6 +35,11 @@ class Box(object):
     def get_dim(self):
         return self.window.getmaxyx()
 
+    def resize(self):
+        # Erase so that borders don't carry over on resize
+        self.window.erase()
+        self.draw()
+
     def draw(self):
         def draw_border(box):
             if is_ascii(''.join(box.border)):
@@ -53,6 +58,7 @@ class Box(object):
                     box.window.addstr(h - 1, 0, box.border[6])
                     box.window.addstr(h - 1, w - 1, box.border[7])
                 except:
+                    # TODO: Handle this well?
                     pass
 
         draw_border(self)

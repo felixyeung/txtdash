@@ -59,8 +59,14 @@ def foo(screen):
 
     while True:
         # TODO: a more robust way to redraw.
-        my_layout.draw()
-        my_second_layout.draw()
+        my_layout.arrange()
+        my_second_layout.arrange()
+        my_third_layout.arrange()
+
+        my_layout.resize()
+        my_second_layout.resize()
+        my_third_layout.resize()
+
         rand_instance.box.window.addstr(1, 1, str(rand_instance.content.fetch()))
         rand_instance.box.draw()
         sleep(1)

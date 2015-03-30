@@ -37,6 +37,11 @@ class Layout(object):
         self.add_boxes(box)
 
     def arrange(self):
+        self.height, self.width = self.root.get_dim()
+        self.top, self.left = self.root.get_origin()
+        self.inner_height = inner(self.height, self.padding)
+        self.inner_width = inner(self.width, self.padding)
+
         n = len(self.boxes)
         method_name = '_arrange_{0}'.format(self.arrangement)
         getattr(self, method_name)(n)
@@ -94,3 +99,8 @@ class Layout(object):
         self.root.draw()
         for box in list(self.boxes):
             box.draw()
+            
+    def resize(self):
+        self.root.resize()
+        for box in list(self.boxes):
+            box.resize()
