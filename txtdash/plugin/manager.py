@@ -41,12 +41,12 @@ class PluginLoader(object):
         # TODO: make chdir a context manager.
         os.chdir(path)
         # TODO: decide to read yaml or read dir structure?
-        for ext_dir in [item for item in os.listdir('.') if os.path.isdir(item)]:
+        for plugin_dir in [item for item in os.listdir('.') if os.path.isdir(item)]:
             root_package = os.path.split(path)[-1]
-            plugin_package = ext_dir
+            plugin_package = plugin_dir
             module_name = get_module_name(root_package, plugin_package, 'main')
             loaded_module = importlib.import_module(module_name)
-            # Extract instance of Extension from module
+            # Extract instance of Plugin (created with decorator) from module
             for name, object in inspect.getmembers(loaded_module):
                 if isinstance(object, Plugin):
                     pass
