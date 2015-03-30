@@ -32,10 +32,10 @@ def foo(screen):
 
     my_nested_boxes_2 = make_boxes(7)
     apply_border(Border.DEFAULT, my_nested_boxes_2)
-    my_second_layout = Layout(my_boxes[3], arrangement=Arrangement.VERTICAL)
-    my_second_layout.add_boxes(*my_nested_boxes_2)
-    my_second_layout.arrange()
-    my_second_layout.draw()
+    my_third_layout = Layout(my_boxes[3], arrangement=Arrangement.VERTICAL)
+    my_third_layout.add_boxes(*my_nested_boxes_2)
+    my_third_layout.arrange()
+    my_third_layout.draw()
 
     my_box = Box(cs.newwin(10, 20, 20, 20))
     my_box.set_border(Border.DOTTED)
@@ -59,6 +59,8 @@ def foo(screen):
 
     while True:
         # TODO: a more robust way to redraw.
+        my_layout.draw()
+        my_second_layout.draw()
         rand_instance.box.window.addstr(1, 1, str(rand_instance.content.fetch()))
         rand_instance.box.draw()
         sleep(1)
