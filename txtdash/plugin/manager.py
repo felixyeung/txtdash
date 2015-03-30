@@ -42,7 +42,9 @@ class PluginLoader(object):
         os.chdir(path)
         # TODO: decide to read yaml or read dir structure?
         for ext_dir in [item for item in os.listdir('.') if os.path.isdir(item)]:
-            module_name = '{0}.{1}.main'.format(os.path.split(path)[-1], ext_dir)
+            root_package = os.path.split(path)[-1]
+            plugin_package = ext_dir
+            module_name = get_module_name(root_package, plugin_package, 'main')
             loaded_module = importlib.import_module(module_name)
             # Extract instance of Extension from module
             for name, object in inspect.getmembers(loaded_module):
@@ -50,3 +52,5 @@ class PluginLoader(object):
                     pass
 
 
+def get_module_name(*args):
+    return '.'.join(map(str, args))
