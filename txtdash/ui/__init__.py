@@ -1,1 +1,2 @@
-__author__ = 'fyeung'
+class UiElement(object):
+    pass

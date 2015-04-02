@@ -9,6 +9,7 @@ from txtdash.ui.layout import Layout
 
 from txtdash.plugin import Loader, Registry
 
+
 def foo(screen):
     cs.start_color()
     cs.curs_set(0)
@@ -48,7 +49,8 @@ def foo(screen):
 
     Loader.load('plugins')
     random_plugin = Registry.get('RandomPlugin')
-    rand_instance = random_plugin(Box, FunctionContentProvider, 1, 10000000)
+    rand_instance = random_plugin(Box, FunctionContentProvider, 1, 100 ** 100)
+
     assert isinstance(rand_instance.box, Box)
     assert isinstance(rand_instance.content, FunctionContentProvider)
     # TODO: fix bug where draw fails without calling set_border() first
@@ -67,8 +69,17 @@ def foo(screen):
         my_second_layout.resize()
         my_third_layout.resize()
 
+        # TODO: make it so that when we rand_instance.draw() we get a box update.
         rand_instance.box.window.addstr(1, 1, str(rand_instance.content.fetch()))
         rand_instance.box.draw()
+
+        # TODO: this is a miss use of plugins, a plugin should know how to be drawn on the screen.
+        try:
+            # if overflow, its okay!
+            my_nested_boxes[1].window.addstr(1, 1, str(rand_instance.content.fetch()))
+        except:
+            pass
+        my_nested_boxes[1].draw()
         sleep(1)
 
 

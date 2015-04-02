@@ -1,8 +1,9 @@
+from txtdash.ui import UiElement
 from txtdash.ui.arrangement import Arrangement
 from txtdash.ui.utils import inner
 
 
-class Layout(object):
+class Layout(UiElement):
     def __init__(self, root_box, padding=1, arrangement=Arrangement.HORIZONTAL):
         self.root = root_box
         self.padding = padding

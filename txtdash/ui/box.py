@@ -1,6 +1,7 @@
 import locale
 from curses import panel
 import curses
+from txtdash.ui import UiElement
 
 from txtdash.ui.utils import is_ascii
 
@@ -8,7 +9,7 @@ from txtdash.ui.utils import is_ascii
 locale.setlocale(locale.LC_ALL, '')
 
 
-class Box(object):
+class Box(UiElement):
     def __init__(self, window=None):
         if window is not None:
             self.window = window
