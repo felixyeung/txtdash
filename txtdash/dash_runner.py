@@ -1,4 +1,5 @@
 from time import sleep
+from _curses import error as CursesError
 
 
 class Dash(object):
@@ -8,8 +9,12 @@ class Dash(object):
         self.refresh = refresh
 
     def bind(self, object):
-
+        pass
 
     def show_forever(self):
         while True:
-            sleep(self.refresh)
+            try:
+                sleep(self.refresh)
+            except CursesError:
+                # Our library should have handled everything that curses would cry about.
+                pass

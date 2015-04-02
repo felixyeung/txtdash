@@ -1,12 +1,12 @@
 import curses as cs
 from time import sleep
-from txtdash.content.provider import FunctionContentProvider
+from _curses import error as CursesError
 
+from txtdash.content.provider import FunctionContentProvider
 from txtdash.ui.arrangement import Arrangement
 from txtdash.ui.border import Border
 from txtdash.ui.box import Box, make_boxes, apply_border
 from txtdash.ui.layout import Layout
-
 from txtdash.plugin import Loader, Registry
 
 
@@ -77,7 +77,7 @@ def foo(screen):
         try:
             # if overflow, its okay!
             my_nested_boxes[1].window.addstr(1, 1, str(rand_instance.content.fetch()))
-        except:
+        except CursesError as e:
             pass
         my_nested_boxes[1].draw()
         sleep(1)
