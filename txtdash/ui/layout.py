@@ -100,7 +100,7 @@ class Layout(UiElement):
         self.root.draw()
         for box in list(self.boxes):
             box.draw()
-            
+
     def resize(self):
         self.root.resize()
         for box in list(self.boxes):

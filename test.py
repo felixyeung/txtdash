@@ -70,10 +70,9 @@ def foo(screen):
         my_third_layout.resize()
 
         # TODO: make it so that when we rand_instance.draw() we get a box update.
-        rand_instance.box.window.addstr(1, 1, str(rand_instance.content.fetch()))
-        rand_instance.box.draw()
+        rand_instance.draw()
 
-        # TODO: this is a miss use of plugins, a plugin should know how to be drawn on the screen.
+        # TODO: this is a misuse of plugins, a plugin should know how to be drawn on the screen.
         try:
             # if overflow, its okay!
             my_nested_boxes[1].window.addstr(1, 1, str(rand_instance.content.fetch()))
